@@ -48,7 +48,6 @@ def edit_document(
 def list_docs() -> list[str]:
     return list(docs.keys())
 
-# TODO: Write a resource to return the contents of a particular doc
 @mcp.resource(
     "docs://documents/{doc_id}",
     mime_type="text/plain"
@@ -59,6 +58,24 @@ def fetch_doc(doc_id: str) -> str:
     return docs[doc_id]
 
 # TODO: Write a prompt to rewrite a doc in markdown format
+@mcp.prompt(
+    name="format",
+    description="Rewrite the document in markdown format."
+)
+def format_document(
+    doc_id: str = Field(description="Id of the document to format")
+) -> list[base.Message]:
+    prompt = f"""
+    Your goal is to reformat a document to be rewritten with markdown syntax.
+
+    The id of the document you need to reformat is:
+    <document_id>
+    {doc_id}
+    </document_id>
+
+    Add in headers, bullet points, tables, etc as necessary.
+    """
+
 # TODO: Write a prompt to summarize a doc
 
 
